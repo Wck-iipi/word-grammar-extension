@@ -12,10 +12,19 @@ const useStyles = makeStyles({
   buttonAccept: {
     backgroundColor: SharedColors.greenCyan10,
     color: "white",
+    border: "0px",
+    ":hover": {
+      backgroundColor: SharedColors.green20,
+      color: "white",
+    },
   },
   buttonIgnore: {
     color: SharedColors.red20,
     marginLeft: "5px",
+    border: "0px",
+    ":hover": {
+      color: SharedColors.red10,
+    },
   },
 });
 

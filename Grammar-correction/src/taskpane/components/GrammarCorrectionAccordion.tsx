@@ -7,6 +7,7 @@ import GrammarCorrectionAccordionContent from "./GrammarCorrectionAccordionConte
 const useStyles = makeStyles({
   grammarText: {
     border: `1px solid ${NeutralColors.gray50}`,
+    borderRadius: "5px",
     margin: "10px",
   },
 });
