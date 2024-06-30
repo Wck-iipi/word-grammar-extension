@@ -1,11 +1,8 @@
 import * as React from "react";
+import { useContext } from "react";
 import { makeStyles } from "@fluentui/react-components";
 import { NeutralColors, SharedColors } from "@fluentui/theme";
-
-enum LanguageModel {
-  online = "online",
-  offline = "offline",
-}
+import { LLMType, UrlContext } from "../context/urlContext";
 
 const useStyles = makeStyles({
   currentlyUsing: {
@@ -16,13 +13,13 @@ const useStyles = makeStyles({
   },
 });
 
-let currentLLM: LanguageModel = LanguageModel.online;
-
 const HeaderModelType: React.FC = () => {
   const styles = useStyles();
+  const currentLLMType: LLMType = useContext(UrlContext).type;
+
   return (
     <p className={styles.currentlyUsing}>
-      Currently using: <text className={styles.highlight}>{currentLLM}</text>
+      Currently using: <text className={styles.highlight}>{currentLLMType.toString()}</text>
     </p>
   );
 };
