@@ -3,7 +3,7 @@ import { Accordion, AccordionItem, AccordionHeader, AccordionPanel, makeStyles }
 import { NeutralColors, SharedColors } from "@fluentui/theme";
 import { AddCircle12Filled } from "@fluentui/react-icons";
 import GrammarCorrectionAccordionContent from "./GrammarCorrectionAccordionContent";
-import { getText } from "../context/getText";
+import { getCorrectText } from "../helper/getCorrectText";
 
 const useStyles = makeStyles({
   grammarText: {
@@ -21,7 +21,7 @@ const GrammarCorrectionContentArray: Array<string> = new Array(n).fill("...this 
 
 const GrammarCorrectionAccordion: React.FC = () => {
   const styles = useStyles();
-  const text = getText();
+  const text = getCorrectText();
   return (
     <div>
       <h1>{text}</h1>
