@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext } from "react";
 
 export enum LLMType {
   Gemini = "Gemini",
@@ -14,13 +14,3 @@ export const UrlContext = createContext<UrlContextType>({
   type: LLMType.Local,
   url: "None",
 });
-
-export function useUrlContext() {
-  const context = useContext(UrlContext);
-
-  if (context === null) {
-    throw new Error("URL is not working, please provide it again or check your connection if online");
-  }
-
-  return context;
-}

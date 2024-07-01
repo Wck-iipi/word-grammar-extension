@@ -3,6 +3,7 @@ import { Accordion, AccordionItem, AccordionHeader, AccordionPanel, makeStyles }
 import { NeutralColors, SharedColors } from "@fluentui/theme";
 import { AddCircle12Filled } from "@fluentui/react-icons";
 import GrammarCorrectionAccordionContent from "./GrammarCorrectionAccordionContent";
+import { getText } from "../context/getText";
 
 const useStyles = makeStyles({
   grammarText: {
@@ -20,23 +21,27 @@ const GrammarCorrectionContentArray: Array<string> = new Array(n).fill("...this 
 
 const GrammarCorrectionAccordion: React.FC = () => {
   const styles = useStyles();
+  const text = getText();
   return (
-    <Accordion collapsible>
-      {GrammarCorrectionItemArray.map((_, index) => {
-        const errorColor = SharedColors.red20;
-        return (
-          <AccordionItem key={index} value={index} className={styles.grammarText}>
-            <AccordionHeader expandIcon={<AddCircle12Filled primaryFill={errorColor} />}>
-              <b>{GrammarCorrectionHeaderMistakeArray.at(index)}</b>&ensp;<b>&#183;</b>&ensp;
-              {GrammarCorrectionHeaderMistakeWhatToDoArray.at(index)}
-            </AccordionHeader>
-            <AccordionPanel>
-              <GrammarCorrectionAccordionContent content={GrammarCorrectionContentArray[index]} />
-            </AccordionPanel>
-          </AccordionItem>
-        );
-      })}
-    </Accordion>
+    <div>
+      <h1>{text}</h1>
+      <Accordion collapsible>
+        {GrammarCorrectionItemArray.map((_, index) => {
+          const errorColor = SharedColors.red20;
+          return (
+            <AccordionItem key={index} value={index} className={styles.grammarText}>
+              <AccordionHeader expandIcon={<AddCircle12Filled primaryFill={errorColor} />}>
+                <b>{GrammarCorrectionHeaderMistakeArray.at(index)}</b>&ensp;<b>&#183;</b>&ensp;
+                {GrammarCorrectionHeaderMistakeWhatToDoArray.at(index)}
+              </AccordionHeader>
+              <AccordionPanel>
+                <GrammarCorrectionAccordionContent content={GrammarCorrectionContentArray[index]} />
+              </AccordionPanel>
+            </AccordionItem>
+          );
+        })}
+      </Accordion>
+    </div>
   );
 };
 

@@ -1,13 +1,13 @@
 import * as React from "react";
 import HeaderModelType from "./HeaderModelType";
 import GrammarCorrectionAccordion from "./GrammarCorrectionAccordion";
-import { UrlContext, LLMType, UrlContextType } from "../context/urlContext";
+import { UrlContext, LLMType } from "../context/urlContext";
 
 const Welcome = () => {
-  const [value] = React.useState<UrlContextType>({
-    url: "Enter-your-URL-here-for-the-time-being",
+  const value = {
+    url: "Enter the key here",
     type: LLMType.Gemini,
-  });
+  };
 
   return (
     <UrlContext.Provider value={value}>
