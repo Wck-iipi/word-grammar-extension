@@ -20,9 +20,9 @@ You will find out what the appropriate type is and then write it after "type:"
 5. You will then write the corrected sentence. Write this after "correctedText:"
 
 For example the output of above sentences will be:
-1. {word: "Wrogn", type: "Correctness", whatToDo: "Spelling Error", originalText: "This is Wrogn text.", correctedText: "This is wrong text."}
-2. {word: "cause", type: "Correctness", whatToDo: "Change to causes", originalText: "It is a combination of factors that cause the present situation", correctedText: "It is a combination of factors that causes the present situation"}
-3. {word: "by way of donations in order to fund the works of", type: "Clarity", whatToDo: "Change to to fund", originalText: "Our main role is to raise money by way of donations in order to fund the works of these charities.", correctedText: "Our main role is to raise money to fund these charities."}
+1. {"word": "Wrogn", "type": "Correctness", "whatToDo": "Spelling Error", "originalText": "This is Wrogn text.", "correctedText": "This is wrong text."}
+2. {"word": "cause", "type": "Correctness", "whatToDo": "Change to causes", "originalText": "It is a combination of factors that cause the present situation", "correctedText": "It is a combination of factors that causes the present situation"}
+3. {"word": "by way of donations in order to fund the works of", "type": "Clarity", "whatToDo": "Change to to fund", "originalText": "Our main role is to raise money by way of donations in order to fund the works of these charities.", "correctedText": "Our main role is to raise money to fund these charities."}
 Based on the above commands, you will be given text below. Keep in mind the text will be connected and you have to look for EVERY MISTAKE. Pay close attention to proper nouns and ensure they are capitalized correctly.. Correct the text below and ONLY WRITE THE OUTPUT:
 `;
 
@@ -57,7 +57,7 @@ const useFetchGemini = () => {
     }
   }, [text]);
 
-  return [loading, error, data, loadingLLM, errorLLM];
+  return { loading, error, data, loadingLLM, errorLLM };
 };
 
 export default useFetchGemini;
