@@ -5,7 +5,7 @@ import { UrlContext, LLMType } from "../context/urlContext";
 
 const Welcome = () => {
   const value = {
-    url: "Enter the key here",
+    url: "Enter your KEY HERE",
     type: LLMType.Gemini,
   };
 
