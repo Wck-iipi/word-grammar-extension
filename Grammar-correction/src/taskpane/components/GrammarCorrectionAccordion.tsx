@@ -3,7 +3,7 @@ import { Accordion, AccordionItem, AccordionHeader, AccordionPanel, makeStyles }
 import { NeutralColors, SharedColors } from "@fluentui/theme";
 import { AddCircle12Filled } from "@fluentui/react-icons";
 import GrammarCorrectionAccordionContent from "./GrammarCorrectionAccordionContent";
-import { AccordionObject, getCorrectTextJSON } from "../helper/getCorrectTextJSON";
+import { AccordionObject, useParseJSON } from "../hooks/useParseJSON";
 import { diffWords } from "diff";
 
 const useStyles = makeStyles({
@@ -53,10 +53,10 @@ const populateGrammarCorrectionArray = (n: number, textJson: AccordionObject[]) 
           if (added_words.length > 0 || removed_words.length > 0) {
             added_part = added_words.join(" ");
             removed_part = removed_words.join(" ");
-            if (added_words.length > 0) {
+            if (removed_words.length > 0) {
               sentence.push({ type: GrammarCorrectionContentType.Removal, content: removed_part });
             }
-            if (removed_words.length > 0) {
+            if (added_words.length > 0) {
               sentence.push({ type: GrammarCorrectionContentType.Addition, content: added_part });
             }
           }
@@ -91,20 +91,32 @@ const populateGrammarCorrectionArray = (n: number, textJson: AccordionObject[]) 
 
 const GrammarCorrectionAccordion: React.FC = () => {
   const styles = useStyles();
-  const textJson = getCorrectTextJSON();
-  const n = textJson.length;
-  const GrammarCorrectionItemArray: Array<typeof Accordion> = new Array(n).fill(null);
-
+  const { loading, error, parsedJSON, loadingLLM, errorLLM, setParsedJSON } = useParseJSON();
   const errorColor = SharedColors.red20;
 
-  if (typeof textJson === "string") {
-    return <div>{textJson}</div>;
-  } else {
+  if (error) {
+    return `Error fetching text(word related error): ${error}`;
+  }
+  if (errorLLM) {
+    return `Error fetching data from LLM: ${errorLLM}`;
+  }
+  if (loading) {
+    return "Fetching Text from Word...";
+  }
+  if (loadingLLM) {
+    return "Fetching data from LLM...";
+  }
+
+  if (parsedJSON) {
+    const n = parsedJSON.length;
+    const GrammarCorrectionItemArray: Array<typeof Accordion> = new Array(n).fill(null);
+
     const {
       GrammarCorrectionHeaderMistakeArray,
       GrammarCorrectionHeaderMistakeWhatToDoArray,
       GrammarCorrectionContentArray,
-    } = populateGrammarCorrectionArray(n, textJson);
+    } = populateGrammarCorrectionArray(n, parsedJSON);
+
     return (
       <div>
         <Accordion collapsible>
@@ -116,7 +128,12 @@ const GrammarCorrectionAccordion: React.FC = () => {
                   {GrammarCorrectionHeaderMistakeWhatToDoArray.at(index)}
                 </AccordionHeader>
                 <AccordionPanel>
-                  <GrammarCorrectionAccordionContent content={GrammarCorrectionContentArray[index]} />
+                  <GrammarCorrectionAccordionContent
+                    content={GrammarCorrectionContentArray[index]}
+                    index={index}
+                    setParsedJSON={setParsedJSON}
+                    parsedJSON={parsedJSON}
+                  />
                 </AccordionPanel>
               </AccordionItem>
             );
@@ -125,6 +142,7 @@ const GrammarCorrectionAccordion: React.FC = () => {
       </div>
     );
   }
+  return "You shouldn't be seeing this";
 };
 
 export default GrammarCorrectionAccordion;

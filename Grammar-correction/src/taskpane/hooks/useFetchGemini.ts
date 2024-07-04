@@ -8,7 +8,7 @@ This is Wrogn text. This one, however, is correct. It is a combination of factor
 You will be given sentences like above. You are a grammar and spelling correction expert with more than 10 years of experience.
 What you will be doing is to find out the sentences which can be written in a better way.  You will be doing the following:
 1. First you will find which word(s) has error. Write this after "word:".
-2. Then you will find out what type of correction it is. There are 4 types to choose from:
+2. Then you will find out what type of correction it is. There are 5 types to choose from:
 a. Correctness
 b. Clarity
 c. Engagement
@@ -50,12 +50,13 @@ const useFetchGemini = () => {
           setData(data);
           setLoadingLLM(false);
         } catch (error) {
+          setLoadingLLM(false);
           setErrorLLM(error);
         }
       };
       fetchData();
     }
-  }, [text]);
+  }, [loading, error, text]);
 
   return { loading, error, data, loadingLLM, errorLLM };
 };

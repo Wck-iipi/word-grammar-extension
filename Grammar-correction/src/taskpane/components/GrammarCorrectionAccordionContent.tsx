@@ -2,9 +2,14 @@ import * as React from "react";
 import { Button, makeStyles } from "@fluentui/react-components";
 import { SharedColors } from "@fluentui/theme";
 import { GrammarCorrectionContent, GrammarCorrectionContentType } from "./GrammarCorrectionAccordion";
+import { AccordionObject } from "../hooks/useParseJSON";
+import { handleIgnore } from "../helper/handleIgnore";
 
 interface GrammarCorrectionAccordionContentProps {
   content: Array<GrammarCorrectionContent>;
+  setParsedJSON: React.Dispatch<React.SetStateAction<AccordionObject[]>>;
+  index: number;
+  parsedJSON: AccordionObject[];
 }
 const useStyles = makeStyles({
   buttonWrapper: {
@@ -59,7 +64,14 @@ const GrammarCorrectionAccordionContent: React.FC<GrammarCorrectionAccordionCont
       })}
       <div className={styles.buttonWrapper}>
         <Button className={styles.buttonAccept}>Accept</Button>
-        <Button className={styles.buttonIgnore}>Ignore</Button>
+        <Button
+          className={styles.buttonIgnore}
+          onClick={() => {
+            handleIgnore(props.parsedJSON, props.index, props.setParsedJSON);
+          }}
+        >
+          Ignore
+        </Button>
       </div>
     </div>
   );
