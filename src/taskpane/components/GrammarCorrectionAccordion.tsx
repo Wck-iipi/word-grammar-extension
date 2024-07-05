@@ -34,7 +34,7 @@ const populateGrammarCorrectionArray = (n: number, textJson: AccordionObject[]) 
     GrammarCorrectionHeaderMistakeArray[index] = value.word;
     GrammarCorrectionHeaderMistakeWhatToDoArray[index] = value.whatToDo;
 
-    let sentence: Array<GrammarCorrectionContent> = [];
+    const sentence: Array<GrammarCorrectionContent> = [];
 
     const diff = diffWords(value.originalText, value.correctedText);
 
@@ -69,8 +69,8 @@ const populateGrammarCorrectionArray = (n: number, textJson: AccordionObject[]) 
     });
 
     if (added_words.length > 0 || removed_words.length > 0) {
-      let added_part = added_words.join(" ");
-      let removed_part = removed_words.join(" ");
+      const added_part = added_words.join(" ");
+      const removed_part = removed_words.join(" ");
       if (added_words.length > 0) {
         sentence.push({ type: GrammarCorrectionContentType.Removal, content: removed_part });
       }

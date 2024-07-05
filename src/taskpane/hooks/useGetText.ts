@@ -6,7 +6,7 @@ async function getTextAsync() {
     let bodyText = "";
 
     await Word.run(async (context) => {
-      let body = context.document.body;
+      const body = context.document.body;
       body.load("text");
       await context.sync();
       bodyText += body.text;

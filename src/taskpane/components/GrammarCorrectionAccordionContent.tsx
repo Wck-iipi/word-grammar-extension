@@ -4,6 +4,7 @@ import { SharedColors } from "@fluentui/theme";
 import { GrammarCorrectionContent, GrammarCorrectionContentType } from "./GrammarCorrectionAccordion";
 import { AccordionObject } from "../hooks/useParseJSON";
 import { handleIgnore } from "../helper/handleIgnore";
+import { handleAccept } from "../helper/handleAccept";
 
 interface GrammarCorrectionAccordionContentProps {
   content: Array<GrammarCorrectionContent>;
@@ -63,7 +64,14 @@ const GrammarCorrectionAccordionContent: React.FC<GrammarCorrectionAccordionCont
         );
       })}
       <div className={styles.buttonWrapper}>
-        <Button className={styles.buttonAccept}>Accept</Button>
+        <Button
+          className={styles.buttonAccept}
+          onClick={() => {
+            handleAccept(props.parsedJSON, props.index, props.setParsedJSON);
+          }}
+        >
+          Accept
+        </Button>
         <Button
           className={styles.buttonIgnore}
           onClick={() => {
