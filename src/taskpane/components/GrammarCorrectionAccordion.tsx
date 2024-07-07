@@ -117,8 +117,8 @@ function rearrangeArrayByIndex(
   currentTypeOfCorrection: typeOfCorrection,
   validCorrectionTypes: Array<typeOfCorrection>
 ) {
-  let rearrangedClassifiedByTypeOfCorrection: Array<Array<AccordionObject>> = [];
-  let colorRearrangedClassifiedByTypeOfCorrection: Array<typeOfCorrectionColor> = [];
+  const rearrangedClassifiedByTypeOfCorrection: Array<Array<AccordionObject>> = [];
+  const colorRearrangedClassifiedByTypeOfCorrection: Array<typeOfCorrectionColor> = [];
 
   if (validCorrectionTypes.includes(currentTypeOfCorrection)) {
     // Always add the specified index first
@@ -133,8 +133,12 @@ function rearrangeArrayByIndex(
       }
     }
   } else {
-    rearrangedClassifiedByTypeOfCorrection = classifiedByTypeOfCorrection;
-    colorRearrangedClassifiedByTypeOfCorrection = colorClassifiedByTypeOfCorrection;
+    for (let i = 0; i < classifiedByTypeOfCorrection.length; i++) {
+      if (classifiedByTypeOfCorrection[i].length > 0) {
+        rearrangedClassifiedByTypeOfCorrection.push(classifiedByTypeOfCorrection[i]);
+        colorRearrangedClassifiedByTypeOfCorrection.push(colorClassifiedByTypeOfCorrection[i]);
+      }
+    }
   }
 
   return { rearrangedClassifiedByTypeOfCorrection, colorRearrangedClassifiedByTypeOfCorrection };
