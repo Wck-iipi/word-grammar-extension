@@ -79,7 +79,7 @@ async function replaceText(originalText: string, newText: string) {
       const body = replaceWithStyleMaintained(errorHTMLMain[0].innerHTML, originalText, newText);
 
       if (result.items.length > 1) {
-        // TODO support multiple instances
+        // TODO support multiple instances or not because low-probability of this happening
         throw new Error("Multiple instances of wrong sentences found. Currently, not supported.");
       } else {
         result.items[0].insertHtml(body.toString(), "Replace");
