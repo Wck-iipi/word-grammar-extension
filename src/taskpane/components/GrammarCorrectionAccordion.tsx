@@ -26,6 +26,55 @@ export interface GrammarCorrectionContent {
   content: string;
 }
 
+const processDiff = (value: AccordionObject) => {
+  const sentence: Array<GrammarCorrectionContent> = [];
+
+  const diff = diffWords(value.originalText, value.correctedText);
+
+  let added_words = [];
+  let removed_words = [];
+
+  diff.forEach((part) => {
+    if (part.added) {
+      added_words.push(part.value);
+    } else if (part.removed) {
+      removed_words.push(part.value);
+    } else {
+      if (part.value !== " ") {
+        let added_part = "";
+        let removed_part = "";
+        if (added_words.length > 0 || removed_words.length > 0) {
+          added_part = added_words.join(" ");
+          removed_part = removed_words.join(" ");
+          if (removed_words.length > 0) {
+            sentence.push({ type: GrammarCorrectionContentType.Removal, content: removed_part });
+          }
+          if (added_words.length > 0) {
+            sentence.push({ type: GrammarCorrectionContentType.Addition, content: added_part });
+          }
+        }
+
+        sentence.push({ type: GrammarCorrectionContentType.None, content: part.value });
+        added_words = [];
+        removed_words = [];
+      }
+    }
+  });
+
+  if (added_words.length > 0 || removed_words.length > 0) {
+    const added_part = added_words.join(" ");
+    const removed_part = removed_words.join(" ");
+    if (added_words.length > 0) {
+      sentence.push({ type: GrammarCorrectionContentType.Removal, content: removed_part });
+    }
+    if (removed_words.length > 0) {
+      sentence.push({ type: GrammarCorrectionContentType.Addition, content: added_part });
+    }
+  }
+
+  return sentence;
+};
+
 const populateGrammarCorrectionArray = (
   n: number,
   rearrangedClassifiedByTypeOfCorrection: AccordionObject[][],
@@ -48,50 +97,7 @@ const populateGrammarCorrectionArray = (
       GrammarCorrectionHeaderMistakeArray[index] = value.word;
       GrammarCorrectionHeaderMistakeWhatToDoArray[index] = value.whatToDo;
 
-      const sentence: Array<GrammarCorrectionContent> = [];
-
-      const diff = diffWords(value.originalText, value.correctedText);
-
-      let added_words = [];
-      let removed_words = [];
-
-      diff.forEach((part) => {
-        if (part.added) {
-          added_words.push(part.value);
-        } else if (part.removed) {
-          removed_words.push(part.value);
-        } else {
-          if (part.value !== " ") {
-            let added_part = "";
-            let removed_part = "";
-            if (added_words.length > 0 || removed_words.length > 0) {
-              added_part = added_words.join(" ");
-              removed_part = removed_words.join(" ");
-              if (removed_words.length > 0) {
-                sentence.push({ type: GrammarCorrectionContentType.Removal, content: removed_part });
-              }
-              if (added_words.length > 0) {
-                sentence.push({ type: GrammarCorrectionContentType.Addition, content: added_part });
-              }
-            }
-
-            sentence.push({ type: GrammarCorrectionContentType.None, content: part.value });
-            added_words = [];
-            removed_words = [];
-          }
-        }
-      });
-
-      if (added_words.length > 0 || removed_words.length > 0) {
-        const added_part = added_words.join(" ");
-        const removed_part = removed_words.join(" ");
-        if (added_words.length > 0) {
-          sentence.push({ type: GrammarCorrectionContentType.Removal, content: removed_part });
-        }
-        if (removed_words.length > 0) {
-          sentence.push({ type: GrammarCorrectionContentType.Addition, content: added_part });
-        }
-      }
+      const sentence = processDiff(value);
 
       GrammarCorrectionContentArray[index] = sentence;
       GrammarCorrectionColorArray[index] = colorRearrangedClassifiedByTypeOfCorrection[i];
