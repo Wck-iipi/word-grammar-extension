@@ -1,18 +1,18 @@
 import * as React from "react";
 import HeaderModelType from "./HeaderModelType";
-import GrammarCorrectionContentType from "./GrammarCorrectionContentType";
+import GrammarCorrectionMain from "./GrammarCorrectionMain";
 import { UrlContext, LLMType } from "../context/urlContext";
 
 const Welcome = () => {
   const value = {
-    url: "Enter your key here",
+    url: "Enter your API KEY HERE",
     type: LLMType.Gemini,
   };
 
   return (
     <UrlContext.Provider value={value}>
       <HeaderModelType />
-      <GrammarCorrectionContentType />
+      <GrammarCorrectionMain />
     </UrlContext.Provider>
   );
 };

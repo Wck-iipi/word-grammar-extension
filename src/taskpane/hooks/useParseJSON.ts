@@ -14,7 +14,6 @@ export function useParseJSON() {
   const [parsedJSON, setParsedJSON] = useState<Array<AccordionObject>>(null);
 
   useEffect(() => {
-    // TODO
     if (data) {
       const text = data.toString();
       const jsonData: Array<string> = text.match(/\{(.*?)\}/gs);
