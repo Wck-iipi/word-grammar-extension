@@ -1,6 +1,6 @@
 import * as React from "react";
-import { makeStyles, Link } from "@fluentui/react-components";
-import { SharedColors, NeutralColors } from "@fluentui/theme";
+import { Link, makeStyles } from "@fluentui/react-components";
+import { NeutralColors } from "@fluentui/theme";
 import { typeOfCorrection, typeOfCorrectionDictionary } from "../prompt/promptCorrectionTypes";
 import { Line } from "rc-progress";
 
@@ -29,22 +29,23 @@ interface GrammarCorrectionFooterProps {
 }
 
 const GrammarCorrectionFooter: React.FC<GrammarCorrectionFooterProps> = (props: GrammarCorrectionFooterProps) => {
+  props;
   const style = useStyles();
-  const typeOfCorrectionArray: typeOfCorrection[] = Object.keys(typeOfCorrection) as unknown as typeOfCorrection[];
-  const typeOfCorrectionArrayLength = typeOfCorrectionArray.length;
-  const typeOfCorrectionTsxArray = new Array<JSX.Element>(typeOfCorrectionArrayLength).fill(null);
+  const typeOfCorrectionArray: typeOfCorrection[] = Object.values(typeOfCorrection) as typeOfCorrection[];
 
   return (
     <div>
       <footer className={style.footer}>
-        {typeOfCorrectionTsxArray.map((_, index) => {
+        {typeOfCorrectionArray.map((key, index) => {
           return (
             <div key={index} className={style.footerChild}>
-              <Line percent={20} strokeWidth={5} trailWidth={5} strokeColor={SharedColors.red10} />
-              <Link
-                appearance="subtle"
-                onClick={() => props.setCurrentTypeOfCorrection(typeOfCorrectionArray[index] as typeOfCorrection)}
-              >
+              <Line
+                percent={20}
+                strokeWidth={5}
+                trailWidth={5}
+                strokeColor={props.typeOfCorrectionDictionaryState[key as typeOfCorrection].color}
+              />
+              <Link appearance="subtle" onClick={() => props.setCurrentTypeOfCorrection(key as typeOfCorrection)}>
                 {typeOfCorrectionArray[index]}
               </Link>
             </div>
