@@ -1,8 +1,8 @@
 import { useState, useEffect, useContext } from "react";
 import useGetText from "./useGetText";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { UrlContext } from "../context/urlContext";
-import { prePrompt } from "../prompt/prompt";
+import { UrlContext } from "@taskpane/context/urlContext";
+import { prePrompt } from "@taskpane/prompt/prompt";
 
 const useFetchGemini = () => {
   const [text, loading, error] = useGetText();

@@ -1,0 +1,9 @@
+{
+  "moduleNameMapper": {
+    "^@taskpane/(.*)": "<rootDir>/src/taskpane/$1",
+    "^@src/(.*)": "<rootDir>/src/$1"
+  },
+  "transformIgnorePatterns": [
+    "node_modules/(?!(react-native|must-be-full-module-name)/)"
+  ]
+}

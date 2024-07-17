@@ -1,5 +1,5 @@
 import { SharedColors } from "@fluentui/theme";
-import { AccordionObject } from "../hooks/useParseJSON";
+import { AccordionObject } from "@src/interface";
 
 export enum typeOfCorrection {
   Correctness = "Correctness",

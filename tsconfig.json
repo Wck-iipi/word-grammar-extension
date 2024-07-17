@@ -13,15 +13,24 @@
     "outDir": "dist",
     "removeComments": false,
     "sourceMap": true,
-    "target": "es2018",
+    "target": "es2020",
     "lib": [
-      "es7",
+      "es2020",
       "dom"
     ],
     "pretty": true,
     "typeRoots": [
       "node_modules/@types"
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@taskpane/*": [
+        "src/taskpane/*"
+      ],
+      "@src/*": [
+        "src/*"
+      ]
+    }
   },
   "exclude": [
     "node_modules"

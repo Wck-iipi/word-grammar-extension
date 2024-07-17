@@ -1,10 +1,10 @@
 import * as React from "react";
 import { Button, makeStyles } from "@fluentui/react-components";
 import { SharedColors } from "@fluentui/theme";
-import { GrammarCorrectionContent, GrammarCorrectionContentType } from "./GrammarCorrectionMain";
-import { AccordionObject } from "../hooks/useParseJSON";
-import { handleIgnore } from "../helper/handleIgnore";
-import { handleAccept } from "../helper/handleAccept";
+import { handleIgnore } from "@taskpane/helper/handleIgnore";
+import { handleAccept } from "@taskpane/helper/handleAccept";
+import { AccordionObject, GrammarCorrectionContent } from "@src/interface";
+import { GrammarCorrectionContentType } from "@src/enum";
 
 interface GrammarCorrectionAccordionContentProps {
   content: Array<GrammarCorrectionContent>;

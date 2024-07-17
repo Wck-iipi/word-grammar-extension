@@ -1,7 +1,8 @@
 import * as React from "react";
 import HeaderModelType from "./HeaderModelType";
 import GrammarCorrectionMain from "./GrammarCorrectionMain";
-import { UrlContext, LLMType } from "../context/urlContext";
+import { UrlContext } from "@taskpane/context/urlContext";
+import { LLMType } from "@src/enum";
 
 const Welcome = () => {
   const value = {

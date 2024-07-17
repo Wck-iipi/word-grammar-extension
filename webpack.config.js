@@ -1,19 +1,22 @@
 /* eslint-disable no-undef */
 
-const devCerts = require("office-addin-dev-certs");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const webpack = require("webpack");
+import { getHttpsServerOptions } from "office-addin-dev-certs";
+import CopyWebpackPlugin from "copy-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import pkg from "webpack";
+const { ProvidePlugin } = pkg;
+import { resolve as _resolve } from "path";
 
 const urlDev = "https://localhost:3000/";
 const urlProd = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
+const __dirname = new URL(".", import.meta.url).pathname;
 
 async function getHttpsOptions() {
-  const httpsOptions = await devCerts.getHttpsServerOptions();
+  const httpsOptions = await getHttpsServerOptions();
   return { ca: httpsOptions.ca, key: httpsOptions.key, cert: httpsOptions.cert };
 }
 
-module.exports = async (env, options) => {
+export default async (env, options) => {
   const dev = options.mode === "development";
   const config = {
     devtool: "source-map",
@@ -28,6 +31,10 @@ module.exports = async (env, options) => {
     },
     resolve: {
       extensions: [".ts", ".tsx", ".html", ".js"],
+      alias: {
+        "@taskpane": _resolve(__dirname, "src/taskpane/"),
+        "@src": _resolve(__dirname, "src/"),
+      },
     },
     module: {
       rules: [
@@ -90,7 +97,7 @@ module.exports = async (env, options) => {
         template: "./src/commands/commands.html",
         chunks: ["commands"],
       }),
-      new webpack.ProvidePlugin({
+      new ProvidePlugin({
         Promise: ["es6-promise", "Promise"],
       }),
     ],

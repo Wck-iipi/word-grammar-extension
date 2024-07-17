@@ -2,7 +2,8 @@ import * as React from "react";
 import { useContext } from "react";
 import { makeStyles } from "@fluentui/react-components";
 import { NeutralColors, SharedColors } from "@fluentui/theme";
-import { LLMType, UrlContext } from "../context/urlContext";
+import { UrlContext } from "@taskpane/context/urlContext";
+import { LLMType } from "@src/enum";
 
 const useStyles = makeStyles({
   currentlyUsing: {

@@ -1,16 +1,17 @@
 import * as React from "react";
-import { AccordionObject } from "../hooks/useParseJSON";
 import { parse } from "node-html-parser";
 import { diffWords } from "diff";
 import { handleIgnore } from "./handleIgnore";
+import { AccordionObject } from "@src/interface";
 
 function replaceWithStyleMaintained(innerHTML: string, originalText: string, correctedText: string) {
   const diff = diffWords(originalText, correctedText);
 
   let added_words = [];
   let removed_words = [];
-
+  // Below variable is to check whether the previous part was opposite(removed or added) of current
   let hasOpposite = false;
+
   let prevPart = "";
 
   diff.forEach((part) => {
@@ -25,28 +26,32 @@ function replaceWithStyleMaintained(innerHTML: string, originalText: string, cor
       }
       removed_words.push(part.value);
     } else {
-      if (part.value !== " ") {
-        if (added_words.length > 0 || removed_words.length > 0) {
-          if (hasOpposite) {
-            innerHTML = innerHTML.replace(removed_words.join(" ").trim(), added_words.join(" ").trim());
+      // if (part.value !== " ") {
+      if (added_words.length > 0 || removed_words.length > 0) {
+        if (hasOpposite) {
+          innerHTML = innerHTML.replace(removed_words.join("").trim(), added_words.join("").trim());
+        } else {
+          if (removed_words.length > 0) {
+            for (const word of removed_words) {
+              innerHTML = innerHTML.replace(word, "");
+            }
           } else {
-            if (removed_words.length > 0) {
-              innerHTML = innerHTML.replace(removed_words.join(" ").trim(), "");
+            if (prevPart.length > 0) {
+              const prevWord = prevPart.trim().split(" ")[prevPart.trim().split(" ").length - 1];
+              innerHTML = innerHTML.replace(prevWord + " ", prevWord + " " + added_words);
             } else {
-              if (prevPart.length > 0) {
-                const prevWord = prevPart.split(" ")[prevPart.split(" ").length - 1];
-                innerHTML = innerHTML.replace(prevWord, prevWord + added_words);
-              } else {
-                innerHTML = added_words + innerHTML;
-              }
+              innerHTML = added_words + innerHTML;
             }
           }
-          added_words = [];
-          removed_words = [];
         }
+        added_words = [];
+        removed_words = [];
       }
+      // }
     }
-    prevPart = part.value;
+    if (!part.added && !part.removed) {
+      prevPart = part.value;
+    }
   });
 
   return innerHTML;
@@ -95,9 +100,11 @@ export function handleAccept(
   index: number,
   setParsedJSON: React.Dispatch<React.SetStateAction<AccordionObject[]>>
 ) {
-  index;
-  setParsedJSON;
-
   replaceText(parsedJSON[index].originalText, parsedJSON[index].correctedText);
   handleIgnore(parsedJSON, index, setParsedJSON);
+}
+
+export let __test__;
+if (process.env.NODE_ENV === "test") {
+  __test__ = { replaceWithStyleMaintained, replaceText };
 }

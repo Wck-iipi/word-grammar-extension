@@ -1,13 +1,6 @@
 import { useEffect, useState } from "react";
-import useFetchGemini from "../hooks/useFetchGemini";
-
-export interface AccordionObject {
-  word: string;
-  type: string;
-  whatToDo: string;
-  originalText: string;
-  correctedText: string;
-}
+import useFetchGemini from "@taskpane/hooks/useFetchGemini";
+import { AccordionObject } from "@src/interface";
 
 export function useParseJSON() {
   const { loading, error, data, loadingLLM, errorLLM } = useFetchGemini();

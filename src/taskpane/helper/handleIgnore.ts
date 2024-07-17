@@ -1,5 +1,5 @@
 import * as React from "react";
-import { AccordionObject } from "../hooks/useParseJSON";
+import { AccordionObject } from "@src/interface";
 
 export function handleIgnore(
   parsedJSON: AccordionObject[],
