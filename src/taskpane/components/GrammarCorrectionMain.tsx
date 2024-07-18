@@ -9,6 +9,7 @@ import { typeOfCorrectionDictionary, typeOfCorrection } from "../prompt/promptCo
 import { useEffect } from "react";
 import {
   classifyAndRearrangeByTypeOfContext,
+  getParsedJSONIndexArray,
   populateGrammarCorrectionArray,
 } from "@taskpane/helper/grammarCorrectionMainHelper";
 
@@ -60,6 +61,8 @@ const GrammarCorrectionMain: React.FC = () => {
       GrammarCorrectionColorArray,
     } = populateGrammarCorrectionArray(typeOfCorrectionDictionaryState);
 
+    const parsedJSONIndexArray = getParsedJSONIndexArray(parsedJSON, typeOfCorrectionDictionaryState);
+
     return (
       <div>
         <Accordion collapsible>
@@ -73,7 +76,7 @@ const GrammarCorrectionMain: React.FC = () => {
                 <AccordionPanel>
                   <GrammarCorrectionAccordionContent
                     content={GrammarCorrectionContentArray[index]}
-                    index={index}
+                    index={parsedJSONIndexArray[index]}
                     setParsedJSON={setParsedJSON}
                     parsedJSON={parsedJSON}
                   />

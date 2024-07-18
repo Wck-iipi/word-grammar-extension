@@ -46,6 +46,16 @@ describe("replaceWithStyleMaintained", () => {
     expect(result).toBe(expectedResult);
   });
 
+  test("replaces words with added and removed words 2", () => {
+    const innerHTML = "This is right sentence.";
+    const originalText = "This is right sentence.";
+    const correctedText = "This is a correct sentence.";
+    const expectedResult = "This is a correct sentence.";
+
+    const result = replaceWithStyleMaintained(innerHTML, originalText, correctedText);
+    expect(result).toBe(expectedResult);
+  });
+
   test("handles mixed changes", () => {
     const innerHTML = "This is a <b>wrong sentence</b>.";
     const originalText = "This is a wrong sentence.";

@@ -66,6 +66,25 @@ const getListContentByTypeOfCorrection = (typeOfCorrectionDictionaryState: typeO
   return rearrangedClassifiedByTypeOfCorrection;
 };
 
+export function getParsedJSONIndexArray(
+  parsedJSON: AccordionObject[],
+  typeOfCorrectionDictionaryState: typeOfCorrectionDictionary
+) {
+  const getParsedJSONIndexArray: Array<number> = [];
+  const listContentByTypeOfCorrection: typeOfCorrection[] = getListContentByTypeOfCorrection(
+    typeOfCorrectionDictionaryState
+  );
+
+  for (let i = 0; i < listContentByTypeOfCorrection.length; i++) {
+    const textJson = typeOfCorrectionDictionaryState[listContentByTypeOfCorrection[i]].content;
+
+    for (const [_, value] of textJson.entries()) {
+      getParsedJSONIndexArray.push(parsedJSON.indexOf(value));
+    }
+  }
+
+  return getParsedJSONIndexArray;
+}
 export const populateGrammarCorrectionArray = (typeOfCorrectionDictionaryState: typeOfCorrectionDictionary) => {
   const GrammarCorrectionHeaderMistakeArray: Array<string> = [];
   const GrammarCorrectionHeaderMistakeWhatToDoArray: Array<string> = [];
@@ -83,7 +102,6 @@ export const populateGrammarCorrectionArray = (typeOfCorrectionDictionaryState: 
       GrammarCorrectionHeaderMistakeArray.push(value.word);
       GrammarCorrectionHeaderMistakeWhatToDoArray.push(value.whatToDo);
       GrammarCorrectionColorArray.push(typeOfCorrectionDictionaryState[listContentByTypeOfCorrection[i]].color);
-
       const sentence = processDiff(value);
 
       GrammarCorrectionContentArray.push(sentence);

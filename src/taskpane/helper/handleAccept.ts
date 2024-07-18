@@ -26,28 +26,28 @@ function replaceWithStyleMaintained(innerHTML: string, originalText: string, cor
       }
       removed_words.push(part.value);
     } else {
-      // if (part.value !== " ") {
-      if (added_words.length > 0 || removed_words.length > 0) {
-        if (hasOpposite) {
-          innerHTML = innerHTML.replace(removed_words.join("").trim(), added_words.join("").trim());
-        } else {
-          if (removed_words.length > 0) {
-            for (const word of removed_words) {
-              innerHTML = innerHTML.replace(word, "");
-            }
+      if (part.value !== " ") {
+        if (added_words.length > 0 || removed_words.length > 0) {
+          if (hasOpposite) {
+            innerHTML = innerHTML.replace(removed_words.join(" ").trim(), added_words.join(" ").trim());
           } else {
-            if (prevPart.length > 0) {
-              const prevWord = prevPart.trim().split(" ")[prevPart.trim().split(" ").length - 1];
-              innerHTML = innerHTML.replace(prevWord + " ", prevWord + " " + added_words);
+            if (removed_words.length > 0) {
+              for (const word of removed_words) {
+                innerHTML = innerHTML.replace(word, "");
+              }
             } else {
-              innerHTML = added_words + innerHTML;
+              if (prevPart.length > 0) {
+                const prevWord = prevPart.trim().split(" ")[prevPart.trim().split(" ").length - 1];
+                innerHTML = innerHTML.replace(prevWord + " ", prevWord + " " + added_words);
+              } else {
+                innerHTML = added_words + innerHTML;
+              }
             }
           }
+          added_words = [];
+          removed_words = [];
         }
-        added_words = [];
-        removed_words = [];
       }
-      // }
     }
     if (!part.added && !part.removed) {
       prevPart = part.value;
