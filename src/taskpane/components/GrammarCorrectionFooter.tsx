@@ -51,28 +51,49 @@ const GrammarCorrectionFooter: React.FC<GrammarCorrectionFooterProps> = (props: 
     <div>
       <footer className={style.footer}>
         {typeOfCorrectionArray.map((key, index) => {
-          if (percentArray[index] === 100) {
+          if (key === props.currentTypeOfCorrection) {
+            return (
+              <div
+                key={index}
+                style={{ backgroundColor: NeutralColors.gray50, margin: 0, height: "100%", width: "100%" }}
+              >
+                <div className={style.footerChild}>
+                  <Line
+                    percent={percentArray[index]}
+                    strokeWidth={5}
+                    trailWidth={5}
+                    strokeColor={props.typeOfCorrectionDictionaryState[key as typeOfCorrection].color}
+                  />
+                  <Link appearance="subtle" onClick={() => props.setCurrentTypeOfCorrection(key as typeOfCorrection)}>
+                    {typeOfCorrectionArray[index]}
+                  </Link>
+                </div>
+              </div>
+            );
+          } else {
+            if (percentArray[index] === 100) {
+              return (
+                <div key={index} className={style.footerChild}>
+                  <PresenceAvailable10Regular color={SharedColors.green10} />
+                  <br></br>
+                  {typeOfCorrectionArray[index]}
+                </div>
+              );
+            }
             return (
               <div key={index} className={style.footerChild}>
-                <PresenceAvailable10Regular color={SharedColors.green10} />
-                <br></br>
-                {typeOfCorrectionArray[index]}
+                <Line
+                  percent={percentArray[index]}
+                  strokeWidth={5}
+                  trailWidth={5}
+                  strokeColor={props.typeOfCorrectionDictionaryState[key as typeOfCorrection].color}
+                />
+                <Link appearance="subtle" onClick={() => props.setCurrentTypeOfCorrection(key as typeOfCorrection)}>
+                  {typeOfCorrectionArray[index]}
+                </Link>
               </div>
             );
           }
-          return (
-            <div key={index} className={style.footerChild}>
-              <Line
-                percent={percentArray[index]}
-                strokeWidth={5}
-                trailWidth={5}
-                strokeColor={props.typeOfCorrectionDictionaryState[key as typeOfCorrection].color}
-              />
-              <Link appearance="subtle" onClick={() => props.setCurrentTypeOfCorrection(key as typeOfCorrection)}>
-                {typeOfCorrectionArray[index]}
-              </Link>
-            </div>
-          );
         })}
       </footer>
     </div>

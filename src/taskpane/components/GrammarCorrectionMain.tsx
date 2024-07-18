@@ -49,9 +49,9 @@ const GrammarCorrectionMain: React.FC = () => {
         setTypeOfCorrectionDictionaryState,
         isFirstRenderWithParsedJSON
       );
+      changeCurrentTypeToTypeWithContent(typeOfCorrectionDictionaryState, setCurrentTypeOfCorrection);
       setIsFirstRenderWithParsedJSON(false);
     }
-    changeCurrentTypeToTypeWithContent();
   }, [parsedJSON, currentTypeOfCorrection]);
 
   if (error) {

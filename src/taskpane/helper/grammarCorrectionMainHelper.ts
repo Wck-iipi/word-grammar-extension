@@ -177,7 +177,21 @@ export function classifyAndRearrangeByTypeOfContext(
   }
 }
 
-export function changeCurrentTypeToTypeWithContent() { }
+export function changeCurrentTypeToTypeWithContent(
+  typeOfCorrectionDictionaryState: typeOfCorrectionDictionary,
+  setCurrentTypeOfCorrection: React.Dispatch<React.SetStateAction<typeOfCorrection>>
+) {
+  setCurrentTypeOfCorrection((prev) => {
+    if (typeOfCorrectionDictionaryState[prev].content.length === 0) {
+      for (const [_, value] of Object.entries(typeOfCorrection)) {
+        if (typeOfCorrectionDictionaryState[value].content.length !== 0) {
+          return value;
+        }
+      }
+    }
+    return prev;
+  });
+}
 
 export let __test__;
 if (process.env.NODE_ENV === "test") {
