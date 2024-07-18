@@ -177,6 +177,8 @@ export function classifyAndRearrangeByTypeOfContext(
   }
 }
 
+export function changeCurrentTypeToTypeWithContent() { }
+
 export let __test__;
 if (process.env.NODE_ENV === "test") {
   __test__ = {

@@ -96,6 +96,9 @@ async function replaceText(originalText: string, newText: string) {
   }
 }
 
+// TODO: Make replaceMultipleText to make handleAcceptAll more efficient.
+// In this, ensure context.sync() is called once instead of n times.
+
 export function handleAccept(
   parsedJSON: AccordionObject[],
   index: number,
@@ -114,7 +117,28 @@ export function handleAccept(
   handleIgnore(parsedJSON, index, setParsedJSON);
 }
 
+export async function handleAcceptAll(
+  parsedJSON: AccordionObject[],
+  currentTypeParsedJSONIndexArray: number[],
+  setParsedJSON: React.Dispatch<React.SetStateAction<AccordionObject[]>>,
+  typeOfCorrectionDictionaryState: typeOfCorrectionDictionary,
+  setTypeOfCorrectionDictionaryState: React.Dispatch<React.SetStateAction<typeOfCorrectionDictionary>>,
+  typeOfCorrectionClicked: typeOfCorrection
+) {
+  const typeOfCorrectionDictionaryCopy: typeOfCorrectionDictionary = JSON.parse(
+    JSON.stringify(typeOfCorrectionDictionaryState)
+  );
+  let parsedJSONCopy = [...parsedJSON];
+  for (const index of currentTypeParsedJSONIndexArray) {
+    replaceText(parsedJSON[index].originalText, parsedJSON[index].correctedText);
+    typeOfCorrectionDictionaryCopy[typeOfCorrectionClicked].correct += 1;
+  }
+  parsedJSONCopy = parsedJSONCopy.filter((_, index) => !currentTypeParsedJSONIndexArray.includes(index));
+  setTypeOfCorrectionDictionaryState(typeOfCorrectionDictionaryCopy);
+  setParsedJSON(parsedJSONCopy);
+}
 export let __test__;
+
 if (process.env.NODE_ENV === "test") {
   __test__ = { replaceWithStyleMaintained, replaceText };
 }

@@ -1,5 +1,12 @@
 import * as React from "react";
-import { Accordion, AccordionItem, AccordionHeader, AccordionPanel, makeStyles } from "@fluentui/react-components";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionHeader,
+  AccordionPanel,
+  makeStyles,
+  Button,
+} from "@fluentui/react-components";
 import { NeutralColors } from "@fluentui/theme";
 import { AddCircle12Filled } from "@fluentui/react-icons";
 import GrammarCorrectionAccordionContent from "./GrammarCorrectionAccordionContent";
@@ -8,10 +15,12 @@ import { useParseJSON } from "../hooks/useParseJSON";
 import { typeOfCorrectionDictionary, typeOfCorrection } from "../prompt/promptCorrectionTypes";
 import { useEffect } from "react";
 import {
+  changeCurrentTypeToTypeWithContent,
   classifyAndRearrangeByTypeOfContext,
   getParsedJSONIndexArray,
   populateGrammarCorrectionArray,
 } from "@taskpane/helper/grammarCorrectionMainHelper";
+import { handleAcceptAll } from "@taskpane/helper/handleAccept";
 
 const useStyles = makeStyles({
   grammarText: {
@@ -42,6 +51,7 @@ const GrammarCorrectionMain: React.FC = () => {
       );
       setIsFirstRenderWithParsedJSON(false);
     }
+    changeCurrentTypeToTypeWithContent();
   }, [parsedJSON, currentTypeOfCorrection]);
 
   if (error) {
@@ -69,9 +79,26 @@ const GrammarCorrectionMain: React.FC = () => {
     } = populateGrammarCorrectionArray(typeOfCorrectionDictionaryState);
 
     const parsedJSONIndexArray = getParsedJSONIndexArray(parsedJSON, typeOfCorrectionDictionaryState);
+    const currentTypeEndsIndex = typeOfCorrectionDictionaryState[currentTypeOfCorrection].content.length;
+    const currentTypeParsedJSONIndexArray = parsedJSONIndexArray.slice(0, currentTypeEndsIndex);
 
     return (
       <div>
+        <Button
+          style={{ backgroundColor: typeOfCorrectionDictionaryState[currentTypeOfCorrection].color, color: "White" }}
+          onClick={() =>
+            handleAcceptAll(
+              parsedJSON,
+              currentTypeParsedJSONIndexArray,
+              setParsedJSON,
+              typeOfCorrectionDictionaryState,
+              setTypeOfCorrectionDictionaryState,
+              currentTypeOfCorrection
+            )
+          }
+        >
+          Accept all {currentTypeOfCorrection}
+        </Button>
         <Accordion collapsible>
           {GrammarCorrectionItemArrayCurrent.map((_, index) => {
             return (
