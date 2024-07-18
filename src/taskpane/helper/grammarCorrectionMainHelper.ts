@@ -90,6 +90,7 @@ export const populateGrammarCorrectionArray = (typeOfCorrectionDictionaryState: 
   const GrammarCorrectionHeaderMistakeWhatToDoArray: Array<string> = [];
   const GrammarCorrectionColorArray: Array<string> = [];
   const GrammarCorrectionContentArray: Array<Array<GrammarCorrectionContent>> = [];
+  const typeOfCorrectionArray: Array<typeOfCorrection> = [];
 
   const listContentByTypeOfCorrection: typeOfCorrection[] = getListContentByTypeOfCorrection(
     typeOfCorrectionDictionaryState
@@ -102,6 +103,7 @@ export const populateGrammarCorrectionArray = (typeOfCorrectionDictionaryState: 
       GrammarCorrectionHeaderMistakeArray.push(value.word);
       GrammarCorrectionHeaderMistakeWhatToDoArray.push(value.whatToDo);
       GrammarCorrectionColorArray.push(typeOfCorrectionDictionaryState[listContentByTypeOfCorrection[i]].color);
+      typeOfCorrectionArray.push(listContentByTypeOfCorrection[i]);
       const sentence = processDiff(value);
 
       GrammarCorrectionContentArray.push(sentence);
@@ -113,6 +115,7 @@ export const populateGrammarCorrectionArray = (typeOfCorrectionDictionaryState: 
     GrammarCorrectionHeaderMistakeWhatToDoArray,
     GrammarCorrectionContentArray,
     GrammarCorrectionColorArray,
+    typeOfCorrectionArray,
   };
 };
 
@@ -153,13 +156,25 @@ function getClassifiedAndRearrangedByTypeOfCorrectionObject(
 export function classifyAndRearrangeByTypeOfContext(
   parsedJSON: Array<AccordionObject>,
   currentTypeOfCorrection: typeOfCorrection,
-  setTypeOfCorrectionDictionaryState: React.Dispatch<React.SetStateAction<typeOfCorrectionDictionary>>
+  setTypeOfCorrectionDictionaryState: React.Dispatch<React.SetStateAction<typeOfCorrectionDictionary>>,
+  isFirstRenderWithParsedJSON: boolean
 ) {
   const typeOfCorrectionDictionary = getClassifiedAndRearrangedByTypeOfCorrectionObject(
     parsedJSON,
     currentTypeOfCorrection
   );
-  setTypeOfCorrectionDictionaryState(typeOfCorrectionDictionary);
+  // setTypeOfCorrectionDictionaryState(typeOfCorrectionDictionary);
+  if (isFirstRenderWithParsedJSON) {
+    setTypeOfCorrectionDictionaryState(typeOfCorrectionDictionary);
+  } else {
+    setTypeOfCorrectionDictionaryState((prev) => {
+      for (const [key] of Object.entries(typeOfCorrectionDictionary)) {
+        typeOfCorrectionDictionary[key as typeOfCorrection].correct = prev[key as typeOfCorrection].correct;
+        typeOfCorrectionDictionary[key as typeOfCorrection].total = prev[key as typeOfCorrection].total;
+      }
+      return typeOfCorrectionDictionary;
+    });
+  }
 }
 
 export let __test__;

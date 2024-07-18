@@ -1,8 +1,9 @@
 import * as React from "react";
 import { Link, makeStyles } from "@fluentui/react-components";
-import { NeutralColors } from "@fluentui/theme";
+import { NeutralColors, SharedColors } from "@fluentui/theme";
 import { typeOfCorrection, typeOfCorrectionDictionary } from "../prompt/promptCorrectionTypes";
 import { Line } from "rc-progress";
+import { PresenceAvailable10Regular } from "@fluentui/react-icons";
 
 const useStyles = makeStyles({
   footer: {
@@ -32,15 +33,37 @@ const GrammarCorrectionFooter: React.FC<GrammarCorrectionFooterProps> = (props: 
   props;
   const style = useStyles();
   const typeOfCorrectionArray: typeOfCorrection[] = Object.values(typeOfCorrection) as typeOfCorrection[];
+  const percentArray: number[] = new Array(typeOfCorrectionArray.length).fill(100);
+
+  for (const typeOfCorrection of typeOfCorrectionArray) {
+    const index = props.typeOfCorrectionDictionaryState[typeOfCorrection].indexFooter;
+    if (props.typeOfCorrectionDictionaryState[typeOfCorrection].total !== 0) {
+      const percent =
+        (props.typeOfCorrectionDictionaryState[typeOfCorrection].correct /
+          props.typeOfCorrectionDictionaryState[typeOfCorrection].total) *
+        100;
+
+      percentArray[index] = percent;
+    }
+  }
 
   return (
     <div>
       <footer className={style.footer}>
         {typeOfCorrectionArray.map((key, index) => {
+          if (percentArray[index] === 100) {
+            return (
+              <div key={index} className={style.footerChild}>
+                <PresenceAvailable10Regular color={SharedColors.green10} />
+                <br></br>
+                {typeOfCorrectionArray[index]}
+              </div>
+            );
+          }
           return (
             <div key={index} className={style.footerChild}>
               <Line
-                percent={20}
+                percent={percentArray[index]}
                 strokeWidth={5}
                 trailWidth={5}
                 strokeColor={props.typeOfCorrectionDictionaryState[key as typeOfCorrection].color}

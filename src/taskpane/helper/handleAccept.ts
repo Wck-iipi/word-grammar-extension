@@ -3,6 +3,7 @@ import { parse } from "node-html-parser";
 import { diffWords } from "diff";
 import { handleIgnore } from "./handleIgnore";
 import { AccordionObject } from "@src/interface";
+import { typeOfCorrection, typeOfCorrectionDictionary } from "@taskpane/prompt/promptCorrectionTypes";
 
 function replaceWithStyleMaintained(innerHTML: string, originalText: string, correctedText: string) {
   const diff = diffWords(originalText, correctedText);
@@ -98,9 +99,18 @@ async function replaceText(originalText: string, newText: string) {
 export function handleAccept(
   parsedJSON: AccordionObject[],
   index: number,
-  setParsedJSON: React.Dispatch<React.SetStateAction<AccordionObject[]>>
+  setParsedJSON: React.Dispatch<React.SetStateAction<AccordionObject[]>>,
+  setTypeOfCorrectionDictionaryState: React.Dispatch<React.SetStateAction<typeOfCorrectionDictionary>>,
+  typeOfCorrectionClicked: typeOfCorrection
 ) {
   replaceText(parsedJSON[index].originalText, parsedJSON[index].correctedText);
+  setTypeOfCorrectionDictionaryState((prev) => ({
+    ...prev,
+    [typeOfCorrectionClicked]: {
+      ...prev[typeOfCorrectionClicked],
+      correct: prev[typeOfCorrectionClicked].correct + 1,
+    },
+  }));
   handleIgnore(parsedJSON, index, setParsedJSON);
 }
 

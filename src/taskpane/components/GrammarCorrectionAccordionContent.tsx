@@ -5,12 +5,15 @@ import { handleIgnore } from "@taskpane/helper/handleIgnore";
 import { handleAccept } from "@taskpane/helper/handleAccept";
 import { AccordionObject, GrammarCorrectionContent } from "@src/interface";
 import { GrammarCorrectionContentType } from "@src/enum";
+import { typeOfCorrection, typeOfCorrectionDictionary } from "@taskpane/prompt/promptCorrectionTypes";
 
 interface GrammarCorrectionAccordionContentProps {
   content: Array<GrammarCorrectionContent>;
   setParsedJSON: React.Dispatch<React.SetStateAction<AccordionObject[]>>;
   index: number;
   parsedJSON: AccordionObject[];
+  setTypeOfCorrectionDictionaryState: React.Dispatch<React.SetStateAction<typeOfCorrectionDictionary>>;
+  typeOfCorrectionClicked: typeOfCorrection;
 }
 const useStyles = makeStyles({
   buttonWrapper: {
@@ -67,7 +70,13 @@ const GrammarCorrectionAccordionContent: React.FC<GrammarCorrectionAccordionCont
         <Button
           className={styles.buttonAccept}
           onClick={() => {
-            handleAccept(props.parsedJSON, props.index, props.setParsedJSON);
+            handleAccept(
+              props.parsedJSON,
+              props.index,
+              props.setParsedJSON,
+              props.setTypeOfCorrectionDictionaryState,
+              props.typeOfCorrectionClicked
+            );
           }}
         >
           Accept

@@ -24,17 +24,23 @@ const useStyles = makeStyles({
 const GrammarCorrectionMain: React.FC = () => {
   const styles = useStyles();
   const { loading, error, parsedJSON, loadingLLM, errorLLM, setParsedJSON } = useParseJSON();
-
   const [currentTypeOfCorrection, setCurrentTypeOfCorrection] = React.useState<typeOfCorrection>(
     typeOfCorrection.Correctness
   );
+  const [isFirstRenderWithParsedJSON, setIsFirstRenderWithParsedJSON] = React.useState<boolean>(true);
 
   const [typeOfCorrectionDictionaryState, setTypeOfCorrectionDictionaryState] =
     React.useState<typeOfCorrectionDictionary>(typeOfCorrectionDictionary);
 
   useEffect(() => {
     if (parsedJSON) {
-      classifyAndRearrangeByTypeOfContext(parsedJSON, currentTypeOfCorrection, setTypeOfCorrectionDictionaryState);
+      classifyAndRearrangeByTypeOfContext(
+        parsedJSON,
+        currentTypeOfCorrection,
+        setTypeOfCorrectionDictionaryState,
+        isFirstRenderWithParsedJSON
+      );
+      setIsFirstRenderWithParsedJSON(false);
     }
   }, [parsedJSON, currentTypeOfCorrection]);
 
@@ -59,6 +65,7 @@ const GrammarCorrectionMain: React.FC = () => {
       GrammarCorrectionHeaderMistakeWhatToDoArray,
       GrammarCorrectionContentArray,
       GrammarCorrectionColorArray,
+      typeOfCorrectionArray,
     } = populateGrammarCorrectionArray(typeOfCorrectionDictionaryState);
 
     const parsedJSONIndexArray = getParsedJSONIndexArray(parsedJSON, typeOfCorrectionDictionaryState);
@@ -79,6 +86,8 @@ const GrammarCorrectionMain: React.FC = () => {
                     index={parsedJSONIndexArray[index]}
                     setParsedJSON={setParsedJSON}
                     parsedJSON={parsedJSON}
+                    setTypeOfCorrectionDictionaryState={setTypeOfCorrectionDictionaryState}
+                    typeOfCorrectionClicked={typeOfCorrectionArray[index]}
                   />
                 </AccordionPanel>
               </AccordionItem>
