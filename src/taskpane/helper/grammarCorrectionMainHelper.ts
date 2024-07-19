@@ -193,6 +193,22 @@ export function changeCurrentTypeToTypeWithContent(
   });
 }
 
+// TODO optimize this as well
+export async function hightlightCurrentRange(originalText: string) {
+  await Word.run(async (context) => {
+    const resultArray = context.document.body.search(originalText, {
+      ignorePunct: false,
+      matchCase: true,
+      matchWholeWord: true,
+    });
+    context.load(resultArray, "text, font");
+    await context.sync();
+    const result = resultArray.items[0];
+    result.select();
+    await context.sync();
+  });
+}
+
 export let __test__;
 if (process.env.NODE_ENV === "test") {
   __test__ = {

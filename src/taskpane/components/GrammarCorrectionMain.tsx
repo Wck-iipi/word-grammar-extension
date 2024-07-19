@@ -18,6 +18,7 @@ import {
   changeCurrentTypeToTypeWithContent,
   classifyAndRearrangeByTypeOfContext,
   getParsedJSONIndexArray,
+  hightlightCurrentRange,
   populateGrammarCorrectionArray,
 } from "@taskpane/helper/grammarCorrectionMainHelper";
 import { handleAcceptAll } from "@taskpane/helper/handleAccept";
@@ -41,6 +42,8 @@ const GrammarCorrectionMain: React.FC = () => {
   const [typeOfCorrectionDictionaryState, setTypeOfCorrectionDictionaryState] =
     React.useState<typeOfCorrectionDictionary>(typeOfCorrectionDictionary);
 
+  // TODO: Fix double clicking on handleAllAccept or handleAccept
+  // to update (Not urgent cuz I like it)
   useEffect(() => {
     if (parsedJSON) {
       classifyAndRearrangeByTypeOfContext(
@@ -102,7 +105,12 @@ const GrammarCorrectionMain: React.FC = () => {
         <Accordion collapsible>
           {GrammarCorrectionItemArrayCurrent.map((_, index) => {
             return (
-              <AccordionItem key={index} value={index} className={styles.grammarText}>
+              <AccordionItem
+                key={index}
+                value={index}
+                className={styles.grammarText}
+                onClick={() => hightlightCurrentRange(parsedJSON[parsedJSONIndexArray[index]].originalText)}
+              >
                 <AccordionHeader expandIcon={<AddCircle12Filled primaryFill={GrammarCorrectionColorArray[index]} />}>
                   <b>{GrammarCorrectionHeaderMistakeArray.at(index)}</b>&ensp;<b>&#183;</b>&ensp;
                   {GrammarCorrectionHeaderMistakeWhatToDoArray.at(index)}
