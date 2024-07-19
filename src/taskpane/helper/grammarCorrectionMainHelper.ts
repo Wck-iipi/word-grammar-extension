@@ -194,7 +194,7 @@ export function changeCurrentTypeToTypeWithContent(
 }
 
 // TODO optimize this as well
-export async function hightlightCurrentRange(originalText: string) {
+export async function selectCurrentRange(originalText: string) {
   await Word.run(async (context) => {
     const resultArray = context.document.body.search(originalText, {
       ignorePunct: false,
@@ -203,6 +203,11 @@ export async function hightlightCurrentRange(originalText: string) {
     });
     context.load(resultArray, "text, font");
     await context.sync();
+    // TODO: If there are 2 wrong sentences wrong in same way
+    // then this will throw an error. Currently, multiple not supported.
+    if (resultArray.items.length > 1) {
+      throw new Error("Multiple instances of wrong sentences found. Currently, not supported.");
+    }
     const result = resultArray.items[0];
     result.select();
     await context.sync();

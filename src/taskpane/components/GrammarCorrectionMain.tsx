@@ -18,7 +18,7 @@ import {
   changeCurrentTypeToTypeWithContent,
   classifyAndRearrangeByTypeOfContext,
   getParsedJSONIndexArray,
-  hightlightCurrentRange,
+  selectCurrentRange,
   populateGrammarCorrectionArray,
 } from "@taskpane/helper/grammarCorrectionMainHelper";
 import { handleAcceptAll } from "@taskpane/helper/handleAccept";
@@ -109,7 +109,7 @@ const GrammarCorrectionMain: React.FC = () => {
                 key={index}
                 value={index}
                 className={styles.grammarText}
-                onClick={() => hightlightCurrentRange(parsedJSON[parsedJSONIndexArray[index]].originalText)}
+                onClick={() => selectCurrentRange(parsedJSON[parsedJSONIndexArray[index]].originalText)}
               >
                 <AccordionHeader expandIcon={<AddCircle12Filled primaryFill={GrammarCorrectionColorArray[index]} />}>
                   <b>{GrammarCorrectionHeaderMistakeArray.at(index)}</b>&ensp;<b>&#183;</b>&ensp;
