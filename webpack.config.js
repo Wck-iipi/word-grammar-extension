@@ -35,6 +35,10 @@ export default async (env, options) => {
         "@taskpane": _resolve(__dirname, "src/taskpane/"),
         "@src": _resolve(__dirname, "src/"),
       },
+      fallback: {
+        fs: false,
+        child_process: false,
+      },
     },
     module: {
       rules: [

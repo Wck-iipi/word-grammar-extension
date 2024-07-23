@@ -1,9 +1,14 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useFetchGemini from "@taskpane/hooks/useFetchGemini";
 import { AccordionObject } from "@src/interface";
+import { LLMType } from "@src/enum";
+import useFetchLocal from "./useFetchLocal";
+import { UrlContext } from "@taskpane/context/urlContext";
 
 export function useParseJSON() {
-  const { loading, error, data, loadingLLM, errorLLM } = useFetchGemini();
+  const currentLLMType = useContext(UrlContext).type;
+  const { loading, error, data, loadingLLM, errorLLM } =
+    currentLLMType === LLMType.Gemini ? useFetchGemini() : useFetchLocal();
   const [parsedJSON, setParsedJSON] = useState<Array<AccordionObject>>(null);
 
   useEffect(() => {

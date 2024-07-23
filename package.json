@@ -37,6 +37,8 @@
     "@fluentui/theme": "^2.6.55",
     "@google/generative-ai": "^0.14.0",
     "@types/diff": "^5.2.1",
+    "axios": "^1.7.2",
+    "child_process": "^1.0.2",
     "core-js": "^3.36.0",
     "diff": "^5.2.0",
     "es6-promise": "^4.2.8",
@@ -44,12 +46,14 @@
     "rc-progress": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "regenerator-runtime": "^0.14.1"
+    "regenerator-runtime": "^0.14.1",
+    "webpack": "^5.93.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
     "@babel/preset-typescript": "^7.24.7",
     "@types/jest": "^29.5.12",
+    "@types/node": "^20.14.11",
     "@types/office-js": "^1.0.377",
     "@types/office-runtime": "^1.0.35",
     "@types/react": "^18.2.64",
@@ -79,7 +83,6 @@
     "ts-jest": "^29.2.2",
     "ts-loader": "^9.5.1",
     "typescript": "^5.4.2",
-    "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "5.0.3"
   },
