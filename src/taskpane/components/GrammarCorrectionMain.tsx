@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useHistory } from "react-router-dom";
 import {
   Accordion,
   AccordionItem,
@@ -7,7 +8,7 @@ import {
   makeStyles,
   Button,
 } from "@fluentui/react-components";
-import { NeutralColors } from "@fluentui/theme";
+import { NeutralColors, SharedColors } from "@fluentui/theme";
 import { AddCircle12Filled } from "@fluentui/react-icons";
 import GrammarCorrectionAccordionContent from "./GrammarCorrectionAccordionContent";
 import GrammarCorrectionFooter from "./GrammarCorrectionFooter";
@@ -41,6 +42,8 @@ const GrammarCorrectionMain: React.FC = () => {
 
   const [typeOfCorrectionDictionaryState, setTypeOfCorrectionDictionaryState] =
     React.useState<typeOfCorrectionDictionary>(typeOfCorrectionDictionary);
+
+  const history = useHistory();
 
   // TODO: Fix double clicking on handleAllAccept or handleAccept
   // to update (Not urgent cuz I like it)
@@ -87,21 +90,29 @@ const GrammarCorrectionMain: React.FC = () => {
 
     return (
       <div>
-        <Button
-          style={{ backgroundColor: typeOfCorrectionDictionaryState[currentTypeOfCorrection].color, color: "White" }}
-          onClick={() =>
-            handleAcceptAll(
-              parsedJSON,
-              currentTypeParsedJSONIndexArray,
-              setParsedJSON,
-              typeOfCorrectionDictionaryState,
-              setTypeOfCorrectionDictionaryState,
-              currentTypeOfCorrection
-            )
-          }
-        >
-          Accept all {currentTypeOfCorrection}
-        </Button>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Button
+            style={{ backgroundColor: typeOfCorrectionDictionaryState[currentTypeOfCorrection].color, color: "White" }}
+            onClick={() =>
+              handleAcceptAll(
+                parsedJSON,
+                currentTypeParsedJSONIndexArray,
+                setParsedJSON,
+                typeOfCorrectionDictionaryState,
+                setTypeOfCorrectionDictionaryState,
+                currentTypeOfCorrection
+              )
+            }
+          >
+            Accept all {currentTypeOfCorrection}
+          </Button>
+          <Button
+            style={{ backgroundColor: SharedColors.pinkRed10, color: "White" }}
+            onClick={() => window.location.reload()}
+          >
+            Reload
+          </Button>
+        </div>
         <Accordion collapsible>
           {GrammarCorrectionItemArrayCurrent.map((_, index) => {
             return (

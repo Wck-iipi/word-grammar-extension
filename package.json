@@ -37,6 +37,7 @@
     "@fluentui/theme": "^2.6.55",
     "@google/generative-ai": "^0.14.0",
     "@types/diff": "^5.2.1",
+    "@types/react-router": "^5.1.20",
     "axios": "^1.7.2",
     "child_process": "^1.0.2",
     "core-js": "^3.36.0",
@@ -46,6 +47,7 @@
     "rc-progress": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^5.3.4",
     "regenerator-runtime": "^0.14.1",
     "webpack": "^5.93.0"
   },

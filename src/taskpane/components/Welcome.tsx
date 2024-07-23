@@ -1,9 +1,11 @@
 import * as React from "react";
 import { LLMType } from "@src/enum";
 import { makeStyles } from "@fluentui/react-components";
+import { UrlContextType } from "@src/interface";
 
 interface WelcomeProps {
   onKeySubmit: () => void;
+  setValue: React.Dispatch<React.SetStateAction<UrlContextType>>;
 }
 
 const useStyles = makeStyles({
@@ -61,7 +63,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Welcome: React.FC<WelcomeProps> = ({ onKeySubmit }) => {
+const Welcome: React.FC<WelcomeProps> = ({ onKeySubmit, setValue }) => {
   const [_, setKey] = React.useState<string>("");
 
   const styles = useStyles();
@@ -76,6 +78,10 @@ const Welcome: React.FC<WelcomeProps> = ({ onKeySubmit }) => {
           setKey(e.currentTarget.key.value);
           localStorage.setItem("apiKey", e.currentTarget.key.value);
           localStorage.setItem("type", e.currentTarget.typeOfLLM.value);
+          setValue({
+            url: e.currentTarget.key.value,
+            type: e.currentTarget.typeOfLLM.value as LLMType,
+          });
           onKeySubmit();
         }}
       >
