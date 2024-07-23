@@ -48,7 +48,7 @@ const GrammarCorrectionFooter: React.FC<GrammarCorrectionFooterProps> = (props: 
   }
 
   return (
-    <div>
+    <div style={{ paddingBottom: "80px" }}>
       <footer className={style.footer}>
         {typeOfCorrectionArray.map((key, index) => {
           if (key === props.currentTypeOfCorrection) {

@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import useGetText from "./useGetText";
 import { prePrompt } from "@taskpane/prompt/prompt";
 
+// TODO
 const useFetchLocal = () => {
   const location = useContext(UrlContext).url;
   const [text, loading, error] = useGetText();
