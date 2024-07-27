@@ -1,23 +1,31 @@
-import { useContext, useEffect, useState } from "react";
+import React from "react";
+import { useState } from "react";
 import useFetchGemini from "@taskpane/hooks/useFetchGemini";
 import { AccordionObject } from "@src/interface";
-import { LLMType } from "@src/enum";
-import useFetchLocal from "./useFetchLocal";
-import { UrlContext } from "@taskpane/context/urlContext";
 
-export function useParseJSON() {
-  const currentLLMType = useContext(UrlContext).type;
-  const { loading, error, data, loadingLLM, errorLLM } =
-    currentLLMType === LLMType.Gemini ? useFetchGemini() : useFetchLocal();
-  const [parsedJSON, setParsedJSON] = useState<Array<AccordionObject>>(null);
+export function parseJSON(
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  setError: React.Dispatch<React.SetStateAction<string | null>>,
+  setParsedJSON: React.Dispatch<React.SetStateAction<Array<AccordionObject>>>,
+  setLoadingLLM: React.Dispatch<React.SetStateAction<boolean>>,
+  setErrorLLM: React.Dispatch<React.SetStateAction<string | null>>
+) {
+  const [data, setData] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (data) {
-      const text = data.toString();
-      const jsonData: Array<string> = text.match(/\{(.*?)\}/gs);
-      setParsedJSON(jsonData.map((data) => JSON.parse(data)));
-    }
-  }, [data]);
+  useFetchGemini(setLoading, setError, setLoadingLLM, setErrorLLM, setData);
 
-  return { loading, error, parsedJSON, loadingLLM, errorLLM, setParsedJSON };
+  // const currentLLMType = useContext(UrlContext).type;
+  // Change useFetchLocal later
+  // if (currentLLMType === LLMType.Gemini) {
+  //   useFetchGemini(setLoading, setError, setLoadingLLM, setErrorLLM, setData);
+  // } else if (currentLLMType === LLMType.Local) {
+  //   useFetchLocal();
+  // }
+
+  if (data) {
+    const text = data.toString();
+    const jsonData: Array<string> = text.match(/\{(.*?)\}/gs);
+    // throw new Error("" + text + "\n\n" + jsonData);
+    setParsedJSON(jsonData.map((data) => JSON.parse(data)));
+  }
 }
