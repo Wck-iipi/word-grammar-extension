@@ -49,6 +49,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^5.3.4",
     "regenerator-runtime": "^0.14.1",
+    "tsconfig-paths-webpack-plugin": "^4.1.0",
     "webpack": "^5.93.0"
   },
   "devDependencies": {

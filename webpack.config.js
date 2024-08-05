@@ -3,6 +3,7 @@
 import { getHttpsServerOptions } from "office-addin-dev-certs";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
+import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 import pkg from "webpack";
 const { ProvidePlugin } = pkg;
 import { resolve as _resolve } from "path";
@@ -10,6 +11,7 @@ import { resolve as _resolve } from "path";
 const urlDev = "https://localhost:3000/";
 const urlProd = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
 const __dirname = new URL(".", import.meta.url).pathname;
+// const __dirname = "D:\\wordAddin\\word-grammar-extension\\";
 
 async function getHttpsOptions() {
   const httpsOptions = await getHttpsServerOptions();
@@ -30,15 +32,9 @@ export default async (env, options) => {
       clean: true,
     },
     resolve: {
-      extensions: [".ts", ".tsx", ".html", ".js"],
-      alias: {
-        "@taskpane": _resolve(__dirname, "src/taskpane/"),
-        "@src": _resolve(__dirname, "src/"),
-      },
-      fallback: {
-        fs: false,
-        child_process: false,
-      },
+      plugins: [new TsconfigPathsPlugin({ configFile: "tsconfig.json" })],
+      extensions: [".ts", ".tsx", ".html", ".js", ".jsx"],
+      fallback: {},
     },
     module: {
       rules: [
