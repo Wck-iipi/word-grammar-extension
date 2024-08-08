@@ -157,24 +157,22 @@ export function classifyAndRearrangeByTypeOfContext(
   parsedJSON: Array<AccordionObject>,
   currentTypeOfCorrection: typeOfCorrection,
   setTypeOfCorrectionDictionaryState: React.Dispatch<React.SetStateAction<typeOfCorrectionDictionary>>,
-  isFirstRenderWithParsedJSON: boolean
+  totalCorrectionElementsByTypeOfCorrection: any
 ) {
   const typeOfCorrectionDictionary = getClassifiedAndRearrangedByTypeOfCorrectionObject(
     parsedJSON,
     currentTypeOfCorrection
   );
   // setTypeOfCorrectionDictionaryState(typeOfCorrectionDictionary);
-  if (isFirstRenderWithParsedJSON) {
-    setTypeOfCorrectionDictionaryState(typeOfCorrectionDictionary);
-  } else {
-    setTypeOfCorrectionDictionaryState((prev) => {
+  setTypeOfCorrectionDictionaryState((prev) => {
+    if (prev) {
       for (const [key] of Object.entries(typeOfCorrectionDictionary)) {
         typeOfCorrectionDictionary[key as typeOfCorrection].correct = prev[key as typeOfCorrection].correct;
-        typeOfCorrectionDictionary[key as typeOfCorrection].total = prev[key as typeOfCorrection].total;
+        typeOfCorrectionDictionary[key as typeOfCorrection].total = totalCorrectionElementsByTypeOfCorrection[key];
       }
-      return typeOfCorrectionDictionary;
-    });
-  }
+    }
+    return typeOfCorrectionDictionary;
+  });
 }
 
 export function changeCurrentTypeToTypeWithContent(

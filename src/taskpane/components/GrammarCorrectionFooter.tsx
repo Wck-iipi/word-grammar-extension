@@ -30,22 +30,12 @@ interface GrammarCorrectionFooterProps {
 }
 
 const GrammarCorrectionFooter: React.FC<GrammarCorrectionFooterProps> = (props: GrammarCorrectionFooterProps) => {
-  props;
   const style = useStyles();
   const typeOfCorrectionArray: typeOfCorrection[] = Object.values(typeOfCorrection) as typeOfCorrection[];
-  const percentArray: number[] = new Array(typeOfCorrectionArray.length).fill(100);
-
-  for (const typeOfCorrection of typeOfCorrectionArray) {
-    const index = props.typeOfCorrectionDictionaryState[typeOfCorrection].indexFooter;
-    if (props.typeOfCorrectionDictionaryState[typeOfCorrection].total !== 0) {
-      const percent =
-        (props.typeOfCorrectionDictionaryState[typeOfCorrection].correct /
-          props.typeOfCorrectionDictionaryState[typeOfCorrection].total) *
-        100;
-
-      percentArray[index] = percent;
-    }
-  }
+  const percentArray: number[] = typeOfCorrectionArray.map((type) => {
+    const { correct, total } = props.typeOfCorrectionDictionaryState[type];
+    return total !== 0 ? (correct / total) * 100 : 100;
+  });
 
   return (
     <div style={{ paddingBottom: "80px" }}>

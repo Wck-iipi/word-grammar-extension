@@ -43,6 +43,14 @@ const GrammarCorrectionMain: React.FC = () => {
   const [parsedJSON, setParsedJSON] = React.useState<Array<AccordionObject> | null>(null);
   const [loadingLLM, setLoadingLLM] = React.useState<boolean>(true);
   const [errorLLM, setErrorLLM] = React.useState<string | null>(null);
+  const typeOfCorrectionArray = Object.values(typeOfCorrection) as typeOfCorrection[];
+  const [totalCorrectionElementsByTypeOfCorrection, _] = React.useState(() => {
+    const initialState = {};
+    for (let i = 0; i < typeOfCorrectionArray.length; i++) {
+      initialState[typeOfCorrectionArray[i]] = 0;
+    }
+    return initialState;
+  });
 
   // const { loading, error, parsedJSON, loadingLLM, errorLLM, setParsedJSON } = useParseJSON();
 
@@ -60,7 +68,6 @@ const GrammarCorrectionMain: React.FC = () => {
           const prompt = `${prePrompt}\n${text}`;
           const result = await model.generateContentStream(prompt);
 
-          // Rethink logic again(with copy future varun)
           let jsonObjectString = "";
 
           for await (const chunk of result.stream) {
@@ -83,9 +90,12 @@ const GrammarCorrectionMain: React.FC = () => {
               totalLog += `objectArrayLength: ${objectArray.length}\n}`;
               // totalLog += `mapOutput: ${objectArray.map((data) => data + ",")}\n`;
               // jsonString = jsonString.replace(/\t/g, '\\t');
-              const parsedJSONArray = objectArray.map((data) =>
-                JSON.parse(data.replace(/\t/g, "\\t").replace(/\n/g, "\\n"))
-              );
+              const parsedJSONArray = objectArray.map((data) => {
+                const parsedJSONData: AccordionObject = JSON.parse(data.replace(/\t/g, "\\t").replace(/\n/g, "\\n"));
+                const type = parsedJSONData.type as typeOfCorrection;
+                totalCorrectionElementsByTypeOfCorrection[type]++;
+                return parsedJSONData;
+              });
               // const parsedJSONArray = helloKittyArray.map((data) => JSON.parse(data));
               totalLog += `parsedJSONArray: ${parsedJSONArray}\n`;
 
@@ -118,23 +128,19 @@ const GrammarCorrectionMain: React.FC = () => {
   const [currentTypeOfCorrection, setCurrentTypeOfCorrection] = React.useState<typeOfCorrection>(
     typeOfCorrection.Correctness
   );
-  const [isFirstRenderWithParsedJSON, setIsFirstRenderWithParsedJSON] = React.useState<boolean>(true);
 
   const [typeOfCorrectionDictionaryState, setTypeOfCorrectionDictionaryState] =
     React.useState<typeOfCorrectionDictionary>(typeOfCorrectionDictionary);
 
-  // TODO: Fix double clicking on handleAllAccept or handleAccept
-  // to update (Not urgent cuz I like it)
   useEffect(() => {
     if (parsedJSON) {
       classifyAndRearrangeByTypeOfContext(
         parsedJSON,
         currentTypeOfCorrection,
         setTypeOfCorrectionDictionaryState,
-        isFirstRenderWithParsedJSON
+        totalCorrectionElementsByTypeOfCorrection
       );
       changeCurrentTypeToTypeWithContent(typeOfCorrectionDictionaryState, setCurrentTypeOfCorrection);
-      setIsFirstRenderWithParsedJSON(false);
     }
   }, [parsedJSON, currentTypeOfCorrection]);
 
