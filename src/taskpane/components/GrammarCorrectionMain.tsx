@@ -77,14 +77,17 @@ const GrammarCorrectionMain: React.FC = () => {
             totalLog += `jsonObjectString: ${jsonObjectString}\n`;
 
             if (chunkText.includes("\ude3d")) {
+              jsonObjectString = jsonObjectString.replace("```json\n", "");
               const completeJSONString = jsonObjectString + chunkText;
-              const objectArray = completeJSONString.split("𩸽");
+              let objectArray = completeJSONString.split("𩸽");
 
               if (chunkText.at(-1) === "\ude3d") {
                 jsonObjectString = "";
               } else {
                 jsonObjectString = objectArray.pop();
               }
+
+              objectArray = objectArray.map((data) => data + "}");
 
               totalLog += `objectArray: ${objectArray}\n`;
               totalLog += `objectArrayLength: ${objectArray.length}\n}`;
@@ -94,6 +97,7 @@ const GrammarCorrectionMain: React.FC = () => {
                 const parsedJSONData: AccordionObject = JSON.parse(data.replace(/\t/g, "\\t").replace(/\n/g, "\\n"));
                 const type = parsedJSONData.type as typeOfCorrection;
                 totalCorrectionElementsByTypeOfCorrection[type]++;
+                totalLog += `parsedJSONData: ${parsedJSONData}\n`;
                 return parsedJSONData;
               });
               // const parsedJSONArray = helloKittyArray.map((data) => JSON.parse(data));
